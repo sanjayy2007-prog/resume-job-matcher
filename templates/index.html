@@ -8,103 +8,192 @@
     <title>Resume Job Matcher</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #d1d5db;
         }
 
         .container {
-            width: 700px;
-            max-width: 90%;
-            margin: 60px auto;
+            max-width: 850px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        .card {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
         .upload-box {
-            border: 2px dashed #aaa;
+            border: 2px dashed #9ca3af;
+            border-radius: 12px;
             padding: 25px;
-            margin: 20px 0;
-            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
-        label {
-            font-weight: bold;
+        .upload-box label {
             display: block;
-            margin-bottom: 10px;
+            font-weight: bold;
+            margin-bottom: 12px;
         }
 
         input[type="file"] {
             width: 100%;
+            padding: 10px;
         }
 
         button {
             width: 100%;
-            padding: 14px;
-            background: #222;
-            color: white;
+            padding: 15px;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 10px;
+            background: #111827;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
             cursor: pointer;
         }
 
         button:hover {
-            background: #444;
+            background: #374151;
+        }
+
+        .info {
+            text-align: center;
+            margin-top: 25px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .feature {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature h3 {
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .features {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <div class="header">
+        <h1>Resume Job Matcher</h1>
+        <p>AI-powered Resume and Job Description Matching</p>
+    </div>
+
     <div class="container">
 
-        <h1>Resume Job Matcher</h1>
+        <div class="card">
 
-        <p class="subtitle">
-            Upload your resume and job description to check the match.
-        </p>
-
-        <form action="/analyze" method="POST" enctype="multipart/form-data">
-
-            <div class="upload-box">
-                <label>Upload Resume (PDF)</label>
-
-                <input type="file"
-                       name="resume"
-                       accept=".pdf"
-                       required>
+            <div class="section-title">
+                Upload Your Documents
             </div>
 
-            <div class="upload-box">
-                <label>Upload Job Description</label>
+            <form action="/analyze" method="POST" enctype="multipart/form-data">
 
-                <input type="file"
-                       name="job_description"
-                       accept=".txt"
-                       required>
+                <div class="upload-box">
+                    <label>📄 Resume (PDF)</label>
+
+                    <input type="file"
+                           name="resume"
+                           accept=".pdf"
+                           required>
+                </div>
+
+                <div class="upload-box">
+                    <label>📋 Job Description (TXT)</label>
+
+                    <input type="file"
+                           name="job_description"
+                           accept=".txt"
+                           required>
+                </div>
+
+                <button type="submit">
+                    🔍 Analyze Resume
+                </button>
+
+            </form>
+
+            <div class="info">
+                Your resume is analyzed using NLP and Machine Learning techniques.
             </div>
 
-            <button type="submit">
-                Analyze Resume
-            </button>
+        </div>
 
-        </form>
+        <div class="features">
+
+            <div class="feature">
+                <h3>📊 Match Score</h3>
+                <p>Calculate resume and job similarity.</p>
+            </div>
+
+            <div class="feature">
+                <h3>✅ Skills</h3>
+                <p>Identify matched and missing skills.</p>
+            </div>
+
+            <div class="feature">
+                <h3>💡 Recommendation</h3>
+                <p>Get suggestions based on your score.</p>
+            </div>
+
+        </div>
 
     </div>
 

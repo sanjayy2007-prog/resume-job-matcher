@@ -61,7 +61,7 @@ def analyze():
         [resume_clean, job_clean]
     )
 
-    # Similarity
+    # Cosine Similarity
     similarity = cosine_similarity(
         vectors[0],
         vectors[1]
@@ -101,23 +101,13 @@ def analyze():
     else:
         recommendation = "Low Match - Learn the missing skills to improve your resume."
 
-    return f"""
-    <h1>Resume Match Result</h1>
-
-    <h2>Match Score: {round(match_score, 2)}%</h2>
-
-    <h3>Matched Skills</h3>
-    <p>{", ".join(matched_skills)}</p>
-
-    <h3>Missing Skills</h3>
-    <p>{", ".join(missing_skills)}</p>
-
-    <h3>Recommendation</h3>
-    <p>{recommendation}</p>
-
-    <br>
-    <a href="/">Analyze Another Resume</a>
-    """
+    return render_template(
+        "result.html",
+        score=round(match_score, 2),
+        matched_skills=matched_skills,
+        missing_skills=missing_skills,
+        recommendation=recommendation
+    )
 
 
 if __name__ == "__main__":
