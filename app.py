@@ -26,13 +26,26 @@ def home():
 @app.route("/analyze", methods=["POST"])
 def analyze():
 
-    # Get uploaded resume
+    # Check resume
+    if "resume" not in request.files:
+        return "Error: Please upload a resume."
+
     resume = request.files["resume"]
 
-    # Get job description from textarea
-    job_text = request.form["job_description_text"]
+    if resume.filename == "":
+        return "Error: Please select a resume PDF."
 
-    # Save resume
+    # Check file type
+    if not resume.filename.lower().endswith(".pdf"):
+        return "Error: Resume must be a PDF file."
+
+    # Get Job Description
+    job_text = request.form.get("job_description_text", "").strip()
+
+    if not job_text:
+        return "Error: Please enter a Job Description."
+
+    # Save Resume
     resume_path = os.path.join(
         UPLOAD_FOLDER,
         resume.filename
@@ -40,42 +53,39 @@ def analyze():
 
     resume.save(resume_path)
 
-    # -----------------------------
-    # Read Resume PDF
-    # -----------------------------
+    try:
+        # Read Resume PDF
+        reader = PdfReader(resume_path)
 
-    reader = PdfReader(resume_path)
+        resume_text = ""
 
-    resume_text = ""
+        for page in reader.pages:
+            text = page.extract_text()
 
-    for page in reader.pages:
+            if text:
+                resume_text += text
 
-        text = page.extract_text()
+    except Exception:
+        return "Error: Unable to read the uploaded PDF."
 
-        if text:
-            resume_text += text
+    if not resume_text.strip():
+        return "Error: No readable text found in the resume."
 
-    # -----------------------------
-    # Clean Text
-    # -----------------------------
-
+    # Clean text
     resume_clean = clean_text(resume_text)
     job_clean = clean_text(job_text)
 
-    # -----------------------------
     # TF-IDF
-    # -----------------------------
-
     vectorizer = TfidfVectorizer()
 
-    vectors = vectorizer.fit_transform(
-        [resume_clean, job_clean]
-    )
+    try:
+        vectors = vectorizer.fit_transform(
+            [resume_clean, job_clean]
+        )
+    except Exception:
+        return "Error: Unable to process the resume and job description."
 
-    # -----------------------------
     # Cosine Similarity
-    # -----------------------------
-
     similarity = cosine_similarity(
         vectors[0],
         vectors[1]
@@ -83,10 +93,7 @@ def analyze():
 
     match_score = similarity[0][0] * 100
 
-    # -----------------------------
     # Skill Database
-    # -----------------------------
-
     skills = [
         "python",
         "java",
@@ -121,10 +128,7 @@ def analyze():
     matched_skills = []
     missing_skills = []
 
-    # -----------------------------
-    # Compare Required Skills
-    # -----------------------------
-
+    # Compare required skills
     for skill in skills:
 
         if skill in job_clean:
@@ -134,10 +138,7 @@ def analyze():
             else:
                 missing_skills.append(skill)
 
-    # -----------------------------
     # Recommendation
-    # -----------------------------
-
     if match_score >= 75:
 
         recommendation = (
@@ -160,10 +161,7 @@ def analyze():
             "your resume."
         )
 
-    # -----------------------------
-    # Show Result Page
-    # -----------------------------
-
+    # Show Result
     return render_template(
         "result.html",
         score=round(match_score, 2),
