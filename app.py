@@ -69,27 +69,50 @@ def analyze():
 
     match_score = similarity[0][0] * 100
 
-    # Skills
+    # Skill database
     skills = [
         "python",
+        "java",
+        "c++",
+        "sql",
         "machine learning",
+        "deep learning",
+        "data science",
         "data analysis",
         "pandas",
         "numpy",
+        "matplotlib",
+        "seaborn",
         "scikit learn",
-        "sql",
-        "natural language processing"
+        "tensorflow",
+        "pytorch",
+        "natural language processing",
+        "computer vision",
+        "flask",
+        "django",
+        "git",
+        "github",
+        "excel",
+        "power bi",
+        "tableau",
+        "statistics",
+        "html",
+        "css",
+        "javascript"
     ]
 
     matched_skills = []
     missing_skills = []
 
+    # Compare skills required by job
     for skill in skills:
 
-        if skill in resume_clean:
-            matched_skills.append(skill)
-        else:
-            missing_skills.append(skill)
+        if skill in job_clean:
+
+            if skill in resume_clean:
+                matched_skills.append(skill)
+            else:
+                missing_skills.append(skill)
 
     # Recommendation
     if match_score >= 75:
