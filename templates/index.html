@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,60 +7,41 @@
     <title>Resume Job Matcher</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
             background: #f5f7fb;
-            color: #222;
+            margin: 0;
+            padding: 0;
         }
 
         .header {
             background: #111827;
             color: white;
-            padding: 25px;
             text-align: center;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 32px;
-        }
-
-        .header p {
-            color: #d1d5db;
+            padding: 25px;
         }
 
         .container {
             max-width: 850px;
-            margin: 45px auto;
+            margin: 40px auto;
             padding: 20px;
         }
 
         .card {
             background: white;
             padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
         .upload-box {
-            border: 2px dashed #9ca3af;
-            border-radius: 12px;
+            border: 2px dashed #999;
             padding: 25px;
             margin-bottom: 20px;
+            border-radius: 10px;
         }
 
-        .upload-box label {
+        label {
             display: block;
             font-weight: bold;
             margin-bottom: 12px;
@@ -73,92 +53,106 @@
 
         textarea {
             width: 100%;
-            min-height: 180px;
-            padding: 15px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            resize: vertical;
-            font-family: Arial, sans-serif;
+            height: 180px;
+            padding: 12px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            border: 1px solid #ccc;
             font-size: 15px;
+        }
+
+        .or {
+            text-align: center;
+            font-weight: bold;
+            margin: 15px;
         }
 
         button {
             width: 100%;
             padding: 15px;
-            border: none;
-            border-radius: 10px;
             background: #111827;
             color: white;
-            font-size: 17px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
-
-        button:hover {
-            background: #374151;
-        }
-
-        .info {
-            text-align: center;
-            margin-top: 25px;
-            color: #6b7280;
-            font-size: 14px;
-        }
     </style>
-
 </head>
 
 <body>
 
     <div class="header">
-
         <h1>Resume Job Matcher</h1>
-
-        <p>
-            AI-powered Resume and Job Description Matching
-        </p>
-
+        <p>AI-powered Resume and Job Description Matching</p>
     </div>
-
 
     <div class="container">
 
         <div class="card">
 
-            <div class="section-title">
-                Upload Your Resume
-            </div>
+            <form action="/analyze"
+                  method="POST"
+                  enctype="multipart/form-data">
 
-
-            <form action="/analyze" method="POST" enctype="multipart/form-data">
+                <!-- Resume -->
 
                 <div class="upload-box">
 
                     <label>
-                        📄 Resume (PDF)
+                        📄 Upload Resume (PDF)
                     </label>
 
-                    <input type="file"
-                           name="resume"
-                           accept=".pdf"
-                           required>
+                    <input
+                        type="file"
+                        name="resume"
+                        accept=".pdf"
+                        required
+                    >
 
                 </div>
 
 
+                <!-- Job Description Text -->
+
                 <div class="upload-box">
 
                     <label>
-                        📋 Job Description
+                        📋 Paste Job Description
                     </label>
 
                     <textarea
                         name="job_description_text"
-                        placeholder="Paste the job description here..."
-                        required></textarea>
+                        placeholder="Paste Job Description here..."
+                    ></textarea>
 
                 </div>
 
+
+                <div class="or">
+                    OR
+                </div>
+
+
+                <!-- Job Description PDF -->
+
+                <div class="upload-box">
+
+                    <label>
+                        📄 Upload Job Description (PDF)
+                    </label>
+
+                    <input
+                        type="file"
+                        name="job_description_pdf"
+                        accept=".pdf"
+                    >
+
+                </div>
+
+
+                <!-- Analyze -->
 
                 <button type="submit">
                     🔍 Analyze Resume
@@ -166,18 +160,9 @@
 
             </form>
 
-
-            <div class="info">
-
-                Your resume will be analyzed using
-                NLP and Machine Learning techniques.
-
-            </div>
-
         </div>
 
     </div>
 
 </body>
-
 </html>
