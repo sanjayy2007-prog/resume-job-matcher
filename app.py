@@ -13,8 +13,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def clean_text(text):
     text = text.lower()
-    text = re.sub(r'[^a-zA-Z0-9\s]', ' ', text)
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r"[^a-zA-Z0-9\s]", " ", text)
+    text = re.sub(r"\s+", " ", text)
     return text.strip()
 
 
@@ -26,42 +26,56 @@ def home():
 @app.route("/analyze", methods=["POST"])
 def analyze():
 
+    # Get uploaded resume
     resume = request.files["resume"]
-    job_description = request.files["job_description"]
 
-    resume_path = os.path.join(UPLOAD_FOLDER, resume.filename)
-    job_path = os.path.join(UPLOAD_FOLDER, job_description.filename)
+    # Get job description from textarea
+    job_text = request.form["job_description_text"]
+
+    # Save resume
+    resume_path = os.path.join(
+        UPLOAD_FOLDER,
+        resume.filename
+    )
 
     resume.save(resume_path)
-    job_description.save(job_path)
 
-    # Read Resume
+    # -----------------------------
+    # Read Resume PDF
+    # -----------------------------
+
     reader = PdfReader(resume_path)
 
     resume_text = ""
 
     for page in reader.pages:
+
         text = page.extract_text()
 
         if text:
             resume_text += text
 
-    # Read Job Description
-    with open(job_path, "r", encoding="utf-8") as file:
-        job_text = file.read()
+    # -----------------------------
+    # Clean Text
+    # -----------------------------
 
-    # Clean text
     resume_clean = clean_text(resume_text)
     job_clean = clean_text(job_text)
 
+    # -----------------------------
     # TF-IDF
+    # -----------------------------
+
     vectorizer = TfidfVectorizer()
 
     vectors = vectorizer.fit_transform(
         [resume_clean, job_clean]
     )
 
+    # -----------------------------
     # Cosine Similarity
+    # -----------------------------
+
     similarity = cosine_similarity(
         vectors[0],
         vectors[1]
@@ -69,7 +83,10 @@ def analyze():
 
     match_score = similarity[0][0] * 100
 
-    # Skill database
+    # -----------------------------
+    # Skill Database
+    # -----------------------------
+
     skills = [
         "python",
         "java",
@@ -104,7 +121,10 @@ def analyze():
     matched_skills = []
     missing_skills = []
 
-    # Compare skills required by job
+    # -----------------------------
+    # Compare Required Skills
+    # -----------------------------
+
     for skill in skills:
 
         if skill in job_clean:
@@ -114,15 +134,35 @@ def analyze():
             else:
                 missing_skills.append(skill)
 
+    # -----------------------------
     # Recommendation
+    # -----------------------------
+
     if match_score >= 75:
-        recommendation = "Excellent Match - You can apply for this job!"
+
+        recommendation = (
+            "Excellent Match - "
+            "You can apply for this job!"
+        )
 
     elif match_score >= 50:
-        recommendation = "Good Match - Improve a few skills before applying."
+
+        recommendation = (
+            "Good Match - "
+            "Improve a few skills before applying."
+        )
 
     else:
-        recommendation = "Low Match - Learn the missing skills to improve your resume."
+
+        recommendation = (
+            "Low Match - "
+            "Learn the missing skills to improve "
+            "your resume."
+        )
+
+    # -----------------------------
+    # Show Result Page
+    # -----------------------------
 
     return render_template(
         "result.html",

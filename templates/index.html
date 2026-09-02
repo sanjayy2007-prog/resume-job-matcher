@@ -32,7 +32,6 @@
         }
 
         .header p {
-            margin: 8px 0 0;
             color: #d1d5db;
         }
 
@@ -70,7 +69,17 @@
 
         input[type="file"] {
             width: 100%;
-            padding: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
         }
 
         button {
@@ -95,74 +104,61 @@
             color: #6b7280;
             font-size: 14px;
         }
-
-        .features {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .feature {
-            flex: 1;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .feature h3 {
-            margin-bottom: 8px;
-        }
-
-        .feature p {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        @media (max-width: 700px) {
-            .features {
-                flex-direction: column;
-            }
-        }
     </style>
+
 </head>
 
 <body>
 
     <div class="header">
+
         <h1>Resume Job Matcher</h1>
-        <p>AI-powered Resume and Job Description Matching</p>
+
+        <p>
+            AI-powered Resume and Job Description Matching
+        </p>
+
     </div>
+
 
     <div class="container">
 
         <div class="card">
 
             <div class="section-title">
-                Upload Your Documents
+                Upload Your Resume
             </div>
+
 
             <form action="/analyze" method="POST" enctype="multipart/form-data">
 
                 <div class="upload-box">
-                    <label>📄 Resume (PDF)</label>
+
+                    <label>
+                        📄 Resume (PDF)
+                    </label>
 
                     <input type="file"
                            name="resume"
                            accept=".pdf"
                            required>
+
                 </div>
+
 
                 <div class="upload-box">
-                    <label>📋 Job Description (TXT)</label>
 
-                    <input type="file"
-                           name="job_description"
-                           accept=".txt"
-                           required>
+                    <label>
+                        📋 Job Description
+                    </label>
+
+                    <textarea
+                        name="job_description_text"
+                        placeholder="Paste the job description here..."
+                        required></textarea>
+
                 </div>
+
 
                 <button type="submit">
                     🔍 Analyze Resume
@@ -170,27 +166,12 @@
 
             </form>
 
+
             <div class="info">
-                Your resume is analyzed using NLP and Machine Learning techniques.
-            </div>
 
-        </div>
+                Your resume will be analyzed using
+                NLP and Machine Learning techniques.
 
-        <div class="features">
-
-            <div class="feature">
-                <h3>📊 Match Score</h3>
-                <p>Calculate resume and job similarity.</p>
-            </div>
-
-            <div class="feature">
-                <h3>✅ Skills</h3>
-                <p>Identify matched and missing skills.</p>
-            </div>
-
-            <div class="feature">
-                <h3>💡 Recommendation</h3>
-                <p>Get suggestions based on your score.</p>
             </div>
 
         </div>
