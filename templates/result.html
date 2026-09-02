@@ -36,12 +36,17 @@
             padding: 20px;
         }
 
-        .score-card {
+        .score-card,
+        .card,
+        .recommendation {
             background: white;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .score-card {
             padding: 35px;
             text-align: center;
-            border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             margin-bottom: 25px;
         }
 
@@ -49,6 +54,22 @@
             font-size: 55px;
             font-weight: bold;
             margin: 15px 0;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 25px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: {{ score }}%;
+            background: #111827;
+            border-radius: 20px;
         }
 
         .result-grid {
@@ -59,10 +80,7 @@
 
         .card {
             flex: 1;
-            background: white;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
         }
 
         .card h2 {
@@ -78,10 +96,7 @@
         }
 
         .recommendation {
-            background: white;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
             margin-bottom: 25px;
         }
 
@@ -106,7 +121,6 @@
             }
         }
     </style>
-
 </head>
 
 <body>
@@ -125,10 +139,15 @@
                 {{ score }}%
             </div>
 
-            <p>Similarity between your resume and the job description</p>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+
+            <p>
+                Similarity between your resume and the job description
+            </p>
 
         </div>
-
 
         <div class="result-grid">
 
@@ -144,7 +163,6 @@
 
             </div>
 
-
             <div class="card">
 
                 <h2>❌ Missing Skills</h2>
@@ -159,7 +177,6 @@
 
         </div>
 
-
         <div class="recommendation">
 
             <h2>💡 Recommendation</h2>
@@ -169,7 +186,6 @@
             </p>
 
         </div>
-
 
         <a href="/" class="button">
             🔙 Analyze Another Resume
