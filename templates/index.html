@@ -69,7 +69,6 @@
 
         input[type="file"] {
             width: 100%;
-            padding: 10px;
         }
 
         textarea {
@@ -81,13 +80,6 @@
             resize: vertical;
             font-family: Arial, sans-serif;
             font-size: 15px;
-        }
-
-        .or {
-            text-align: center;
-            font-weight: bold;
-            color: #6b7280;
-            margin: 15px 0;
         }
 
         button {
@@ -146,12 +138,10 @@
                         📄 Resume (PDF)
                     </label>
 
-                    <input
-                        type="file"
-                        name="resume"
-                        accept=".pdf"
-                        required
-                    >
+                    <input type="file"
+                           name="resume"
+                           accept=".pdf"
+                           required>
 
                 </div>
 
@@ -159,33 +149,13 @@
                 <div class="upload-box">
 
                     <label>
-                        📋 Paste Job Description
+                        📋 Job Description
                     </label>
 
                     <textarea
                         name="job_description_text"
                         placeholder="Paste the job description here..."
-                    ></textarea>
-
-                </div>
-
-
-                <div class="or">
-                    OR
-                </div>
-
-
-                <div class="upload-box">
-
-                    <label>
-                        📄 Upload Job Description (PDF)
-                    </label>
-
-                    <input
-                        type="file"
-                        name="job_description_pdf"
-                        accept=".pdf"
-                    >
+                        required></textarea>
 
                 </div>
 
@@ -199,8 +169,8 @@
 
             <div class="info">
 
-                You can either paste the Job Description
-                or upload it as a PDF.
+                Your resume will be analyzed using
+                NLP and Machine Learning techniques.
 
             </div>
 
