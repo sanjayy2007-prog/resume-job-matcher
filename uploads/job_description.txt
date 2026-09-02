@@ -1,0 +1,15 @@
+Job Title: Data Scientist
+
+We are looking for a Data Scientist with knowledge of Python,
+Machine Learning, Data Analysis, Pandas, NumPy, Scikit-learn,
+SQL and Natural Language Processing.
+
+Required Skills:
+Python
+Machine Learning
+Data Analysis
+Pandas
+NumPy
+Scikit-learn
+SQL
+NLP
