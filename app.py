@@ -84,7 +84,6 @@ def analyze():
         "job_description_pdf"
     )
 
-    # If text is empty, use PDF
     if not job_text and job_pdf and job_pdf.filename:
 
         if not job_pdf.filename.lower().endswith(".pdf"):
@@ -115,7 +114,7 @@ def analyze():
 
 
     # -----------------------------
-    # TF-IDF
+    # TF-IDF Similarity
     # -----------------------------
 
     try:
@@ -126,20 +125,15 @@ def analyze():
             [resume_clean, job_clean]
         )
 
+        similarity = cosine_similarity(
+            vectors[0],
+            vectors[1]
+        )
+
+        text_score = similarity[0][0] * 100
+
     except Exception:
-        return "Error: Unable to process the documents."
-
-
-    # -----------------------------
-    # Cosine Similarity
-    # -----------------------------
-
-    similarity = cosine_similarity(
-        vectors[0],
-        vectors[1]
-    )
-
-    match_score = similarity[0][0] * 100
+        return "Error: Unable to calculate similarity."
 
 
     # -----------------------------
@@ -196,29 +190,69 @@ def analyze():
 
 
     # -----------------------------
+    # Skill Score
+    # -----------------------------
+
+    total_required_skills = (
+        len(matched_skills) +
+        len(missing_skills)
+    )
+
+    if total_required_skills > 0:
+
+        skill_score = (
+            len(matched_skills) /
+            total_required_skills
+        ) * 100
+
+    else:
+
+        skill_score = 0
+
+
+    # -----------------------------
+    # Final Score
+    # -----------------------------
+
+    final_score = (
+        (text_score * 0.70) +
+        (skill_score * 0.30)
+    )
+
+
+    # Keep score between 0 and 100
+
+    final_score = max(
+        0,
+        min(100, final_score)
+    )
+
+
+    # -----------------------------
     # Recommendation
     # -----------------------------
 
-    if match_score >= 75:
+    if final_score >= 75:
 
         recommendation = (
             "Excellent Match - "
-            "You can apply for this job!"
+            "Your resume strongly matches this job."
         )
 
-    elif match_score >= 50:
+    elif final_score >= 50:
 
         recommendation = (
             "Good Match - "
-            "Improve a few skills before applying."
+            "Improve the missing skills to increase "
+            "your chances."
         )
 
     else:
 
         recommendation = (
             "Low Match - "
-            "Learn the missing skills to improve "
-            "your resume."
+            "Consider improving the missing skills "
+            "and tailoring your resume."
         )
 
 
@@ -228,7 +262,7 @@ def analyze():
 
     return render_template(
         "result.html",
-        score=round(match_score, 2),
+        score=round(final_score, 2),
         matched_skills=matched_skills,
         missing_skills=missing_skills,
         recommendation=recommendation
@@ -237,3 +271,4 @@ def analyze():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
