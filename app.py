@@ -261,14 +261,15 @@ def analyze():
     # -----------------------------
 
     return render_template(
-        "result.html",
-        score=round(final_score, 2),
-        matched_skills=matched_skills,
-        missing_skills=missing_skills,
-        recommendation=recommendation
-    )
+    "result.html",
+    score=round(final_score, 2),
+    text_score=round(text_score, 2),
+    skill_score=round(skill_score, 2),
+    matched_skills=matched_skills,
+    missing_skills=missing_skills,
+    recommendation=recommendation
+)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
